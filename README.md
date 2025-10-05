@@ -1,4 +1,4 @@
-## ⚙️ Funcionalidades
+## Funcionalidades
 - Cadastrar livros com título, autor e ano de publicação  
 - Listar livros com informações e situação atual (disponível ou emprestado)  
 - Cadastrar alunos com nome, e-mail e telefone  
@@ -9,7 +9,7 @@
 
 ---
 
-## 🧱 Estrutura do Código
+## Estrutura do Código
 
 ### Classe `Livro`
 Representa um livro da biblioteca, com informações como:
@@ -51,7 +51,7 @@ Principais métodos:
 
 ---
 
-## ▶️ Como Executar
+## Como Executar
 
 1. Salve o código em um arquivo chamado **`BibliotecaVirtual.java`**  
 2. Compile no terminal:  
