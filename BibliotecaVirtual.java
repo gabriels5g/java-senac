@@ -1,46 +1,50 @@
 import java.util.Scanner;
 
 class Livro {
-    String titulo;
+    String nome;
     String autor;
     int ano;
-    boolean emprestado = false;
-    String emprestadoPara = null;
+    boolean emprestado;
+    String alunoEmprestimo;
 
-    public Livro(String titulo, String autor, int ano) {
-        this.titulo = titulo;
+    Livro(String nome, String autor, int ano) {
+        this.nome = nome;
         this.autor = autor;
         this.ano = ano;
+        this.emprestado = false;
+        this.alunoEmprestimo = "";
     }
 
-    public void emprestar(String aluno) {
+    void emprestar(String aluno) {
         if (!emprestado) {
             emprestado = true;
-            emprestadoPara = aluno;
-            System.out.println("Livro emprestado para " + aluno + ".");
+            alunoEmprestimo = aluno;
+            System.out.println("Livro emprestado para " + aluno);
         } else {
-            System.out.println("Livro já está emprestado!");
+            System.out.println("Esse livro já está emprestado.");
         }
     }
 
-    public void devolver() {
+    void devolver() {
         if (emprestado) {
             emprestado = false;
-            emprestadoPara = null;
-            System.out.println("Livro devolvido com sucesso!");
+            alunoEmprestimo = "";
+            System.out.println("Livro devolvido com sucesso.");
         } else {
-            System.out.println("Este livro não está emprestado.");
+            System.out.println("Esse livro não está emprestado.");
         }
     }
 
-    public String getStatus() {
-        return emprestado ? "Emprestado para " + emprestadoPara : "Disponível";
+    String getSituacao() {
+        if (emprestado) {
+            return "Emprestado para " + alunoEmprestimo;
+        } else {
+            return "Disponível";
+        }
     }
 
-    @Override
     public String toString() {
-        return String.format("Título: %s | Autor: %s | Ano: %d | Status: %s",
-                titulo, autor, ano, getStatus());
+        return "Título: " + nome + " | Autor: " + autor + " | Ano: " + ano + " | Situação: " + getSituacao();
     }
 }
 
@@ -49,154 +53,171 @@ class Aluno {
     String email;
     String telefone;
 
-    public Aluno(String nome, String email, String telefone) {
+    Aluno(String nome, String email, String telefone) {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
     }
 
-    @Override
     public String toString() {
-        return String.format("Nome: %s | E-mail: %s | Telefone: %s",
-                nome, email, telefone);
+        return "Nome: " + nome + " | Email: " + email + " | Telefone: " + telefone;
     }
 }
 
 public class BibliotecaVirtual {
-    static Scanner sc = new Scanner(System.in);
-    static final int MAX_LIVROS = 100;
-    static final int MAX_ALUNOS = 100;
-    static Livro[] livros = new Livro[MAX_LIVROS];
-    static Aluno[] alunos = new Aluno[MAX_ALUNOS];
-    static int totalLivros = 0;
-    static int totalAlunos = 0;
+    static Scanner entrada = new Scanner(System.in);
+    static final int TAM_MAX = 100;
+
+    static Livro[] listaLivros = new Livro[TAM_MAX];
+    static Aluno[] listaAlunos = new Aluno[TAM_MAX];
+    static int contLivros = 0;
+    static int contAlunos = 0;
 
     public static void main(String[] args) {
         int opcao;
-        do {
-            System.out.println("BIBLIOTECA VIRTUAL");
-            System.out.println("1. Adicionar Livro");
-            System.out.println("2. Listar Livros");
-            System.out.println("3. Emprestar Livro");
-            System.out.println("4. Devolver Livro");
-            System.out.println("5. Cadastrar Aluno");
-            System.out.println("6. Listar Alunos");
-            System.out.println("0. Sair");
-            System.out.print("Escolha uma opção: ");
-            opcao = Integer.parseInt(sc.nextLine());
 
-            switch (opcao) {
-                case 1 -> adicionarLivro();
-                case 2 -> listarLivros();
-                case 3 -> emprestarLivro();
-                case 4 -> devolverLivro();
-                case 5 -> cadastrarAluno();
-                case 6 -> listarAlunos();
-                case 0 -> System.out.println("Saindo...");
-                default -> System.out.println("Opção inválida!");
+        do {
+            System.out.println("\nBIBLIOTECA VIRTUAL");
+            System.out.println("1 - Cadastrar Livro");
+            System.out.println("2 - Listar Livros");
+            System.out.println("3 - Emprestar Livro");
+            System.out.println("4 - Devolver Livro");
+            System.out.println("5 - Cadastrar Aluno");
+            System.out.println("6 - Listar Alunos");
+            System.out.println("0 - Sair");
+            System.out.print("Opção: ");
+            opcao = Integer.parseInt(entrada.nextLine());
+
+            if (opcao == 1) {
+                cadastrarLivro();
+            } else if (opcao == 2) {
+                mostrarLivros();
+            } else if (opcao == 3) {
+                fazerEmprestimo();
+            } else if (opcao == 4) {
+                devolverLivro();
+            } else if (opcao == 5) {
+                cadastrarAluno();
+            } else if (opcao == 6) {
+                listarAlunos();
+            } else if (opcao != 0) {
+                System.out.println("Opção inválida.");
             }
+
         } while (opcao != 0);
+
+        System.out.println("Programa encerrado.");
     }
 
-    static void adicionarLivro() {
-        if (totalLivros >= MAX_LIVROS) {
-            System.out.println("Limite máximo de livros atingido!");
+    static void cadastrarLivro() {
+        if (contLivros >= TAM_MAX) {
+            System.out.println("Limite de livros atingido.");
             return;
         }
-        System.out.print("Digite o título do livro: ");
-        String titulo = sc.nextLine();
-        System.out.print("Digite o autor: ");
-        String autor = sc.nextLine();
-        System.out.print("Digite o ano de publicação: ");
-        int ano = Integer.parseInt(sc.nextLine());
-        livros[totalLivros] = new Livro(titulo, autor, ano);
-        totalLivros++;
-        System.out.println("Livro adicionado com sucesso!");
+
+        System.out.print("Título: ");
+        String nome = entrada.nextLine();
+        System.out.print("Autor: ");
+        String autor = entrada.nextLine();
+        System.out.print("Ano: ");
+        int ano = Integer.parseInt(entrada.nextLine());
+
+        listaLivros[contLivros] = new Livro(nome, autor, ano);
+        contLivros++;
+        System.out.println("Livro cadastrado com sucesso.");
     }
 
-    static void listarLivros() {
-        if (totalLivros == 0) {
+    static void mostrarLivros() {
+        if (contLivros == 0) {
             System.out.println("Nenhum livro cadastrado.");
-        } else {
-            for (int i = 0; i < totalLivros; i++) {
-                System.out.println(livros[i]);
-            }
+            return;
+        }
+
+        for (int i = 0; i < contLivros; i++) {
+            System.out.println(listaLivros[i]);
         }
     }
 
     static void cadastrarAluno() {
-        if (totalAlunos >= MAX_ALUNOS) {
-            System.out.println("Limite máximo de alunos atingido!");
+        if (contAlunos >= TAM_MAX) {
+            System.out.println("Limite de alunos atingido.");
             return;
         }
-        System.out.print("Digite o nome do aluno: ");
-        String nome = sc.nextLine();
-        System.out.print("Digite o e-mail: ");
-        String email = sc.nextLine();
-        System.out.print("Digite o telefone: ");
-        String telefone = sc.nextLine();
-        alunos[totalAlunos] = new Aluno(nome, email, telefone);
-        totalAlunos++;
-        System.out.println("Aluno cadastrado com sucesso!");
+
+        System.out.print("Nome: ");
+        String nome = entrada.nextLine();
+        System.out.print("Email: ");
+        String email = entrada.nextLine();
+        System.out.print("Telefone: ");
+        String telefone = entrada.nextLine();
+
+        listaAlunos[contAlunos] = new Aluno(nome, email, telefone);
+        contAlunos++;
+        System.out.println("Aluno cadastrado.");
     }
 
     static void listarAlunos() {
-        if (totalAlunos == 0) {
+        if (contAlunos == 0) {
             System.out.println("Nenhum aluno cadastrado.");
-        } else {
-            for (int i = 0; i < totalAlunos; i++) {
-                System.out.println(alunos[i]);
-            }
+            return;
+        }
+
+        for (int i = 0; i < contAlunos; i++) {
+            System.out.println(listaAlunos[i]);
         }
     }
 
-    static void emprestarLivro() {
-        if (totalLivros == 0) {
-            System.out.println("Nenhum livro disponível.");
+    static void fazerEmprestimo() {
+        if (contLivros == 0) {
+            System.out.println("Não há livros cadastrados.");
             return;
         }
-        System.out.print("Digite o título do livro: ");
-        String titulo = sc.nextLine();
-        Livro livroEncontrado = null;
-        for (int i = 0; i < totalLivros; i++) {
-            if (livros[i].titulo.equalsIgnoreCase(titulo)) {
-                livroEncontrado = livros[i];
+
+        System.out.print("Título do livro: ");
+        String titulo = entrada.nextLine();
+
+        Livro livroAchado = null;
+        for (int i = 0; i < contLivros; i++) {
+            if (listaLivros[i].nome.equalsIgnoreCase(titulo)) {
+                livroAchado = listaLivros[i];
                 break;
             }
         }
-        if (livroEncontrado == null) {
-            System.out.println("Livro não encontrado!");
+
+        if (livroAchado == null) {
+            System.out.println("Livro não encontrado.");
             return;
         }
-        if (totalAlunos == 0) {
-            System.out.println("Nenhum aluno cadastrado. Cadastre um aluno primeiro!");
-            return;
-        }
-        System.out.print("Digite o nome do aluno: ");
-        String nomeAluno = sc.nextLine();
-        boolean alunoExiste = false;
-        for (int i = 0; i < totalAlunos; i++) {
-            if (alunos[i].nome.equalsIgnoreCase(nomeAluno)) {
-                alunoExiste = true;
+
+        System.out.print("Nome do aluno: ");
+        String alunoNome = entrada.nextLine();
+        boolean existe = false;
+
+        for (int i = 0; i < contAlunos; i++) {
+            if (listaAlunos[i].nome.equalsIgnoreCase(alunoNome)) {
+                existe = true;
                 break;
             }
         }
-        if (alunoExiste) {
-            livroEncontrado.emprestar(nomeAluno);
+
+        if (existe) {
+            livroAchado.emprestar(alunoNome);
         } else {
-            System.out.println("Aluno não encontrado!");
+            System.out.println("Aluno não cadastrado.");
         }
     }
 
     static void devolverLivro() {
-        System.out.print("Digite o título do livro para devolver: ");
-        String titulo = sc.nextLine();
-        for (int i = 0; i < totalLivros; i++) {
-            if (livros[i].titulo.equalsIgnoreCase(titulo)) {
-                livros[i].devolver();
+        System.out.print("Título do livro para devolver: ");
+        String titulo = entrada.nextLine();
+
+        for (int i = 0; i < contLivros; i++) {
+            if (listaLivros[i].nome.equalsIgnoreCase(titulo)) {
+                listaLivros[i].devolver();
                 return;
             }
         }
-        System.out.println("Livro não encontrado!");
+
+        System.out.println("Livro não encontrado.");
     }
 }
