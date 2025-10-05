@@ -63,26 +63,18 @@ class Aluno {
 }
 
 public class BibliotecaVirtual {
-
     static Scanner sc = new Scanner(System.in);
-
-    // Definindo tamanho máximo dos vetores
     static final int MAX_LIVROS = 100;
     static final int MAX_ALUNOS = 100;
-
-    // Vetores fixos
     static Livro[] livros = new Livro[MAX_LIVROS];
     static Aluno[] alunos = new Aluno[MAX_ALUNOS];
-
-    // Contadores
     static int totalLivros = 0;
     static int totalAlunos = 0;
 
     public static void main(String[] args) {
         int opcao;
-
         do {
-            System.out.println("===== BIBLIOTECA VIRTUAL =====");
+            System.out.println("BIBLIOTECA VIRTUAL");
             System.out.println("1. Adicionar Livro");
             System.out.println("2. Listar Livros");
             System.out.println("3. Emprestar Livro");
@@ -103,7 +95,6 @@ public class BibliotecaVirtual {
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida!");
             }
-
         } while (opcao != 0);
     }
 
@@ -112,17 +103,14 @@ public class BibliotecaVirtual {
             System.out.println("Limite máximo de livros atingido!");
             return;
         }
-
         System.out.print("Digite o título do livro: ");
         String titulo = sc.nextLine();
         System.out.print("Digite o autor: ");
         String autor = sc.nextLine();
         System.out.print("Digite o ano de publicação: ");
         int ano = Integer.parseInt(sc.nextLine());
-
         livros[totalLivros] = new Livro(titulo, autor, ano);
         totalLivros++;
-
         System.out.println("Livro adicionado com sucesso!");
     }
 
@@ -130,7 +118,6 @@ public class BibliotecaVirtual {
         if (totalLivros == 0) {
             System.out.println("Nenhum livro cadastrado.");
         } else {
-            System.out.println("\n=== Lista de Livros ===");
             for (int i = 0; i < totalLivros; i++) {
                 System.out.println(livros[i]);
             }
@@ -142,17 +129,14 @@ public class BibliotecaVirtual {
             System.out.println("Limite máximo de alunos atingido!");
             return;
         }
-
         System.out.print("Digite o nome do aluno: ");
         String nome = sc.nextLine();
         System.out.print("Digite o e-mail: ");
         String email = sc.nextLine();
         System.out.print("Digite o telefone: ");
         String telefone = sc.nextLine();
-
         alunos[totalAlunos] = new Aluno(nome, email, telefone);
         totalAlunos++;
-
         System.out.println("Aluno cadastrado com sucesso!");
     }
 
@@ -160,7 +144,6 @@ public class BibliotecaVirtual {
         if (totalAlunos == 0) {
             System.out.println("Nenhum aluno cadastrado.");
         } else {
-            System.out.println("\n=== Lista de Alunos ===");
             for (int i = 0; i < totalAlunos; i++) {
                 System.out.println(alunos[i]);
             }
@@ -172,10 +155,8 @@ public class BibliotecaVirtual {
             System.out.println("Nenhum livro disponível.");
             return;
         }
-
         System.out.print("Digite o título do livro: ");
         String titulo = sc.nextLine();
-
         Livro livroEncontrado = null;
         for (int i = 0; i < totalLivros; i++) {
             if (livros[i].titulo.equalsIgnoreCase(titulo)) {
@@ -183,20 +164,16 @@ public class BibliotecaVirtual {
                 break;
             }
         }
-
         if (livroEncontrado == null) {
             System.out.println("Livro não encontrado!");
             return;
         }
-
         if (totalAlunos == 0) {
             System.out.println("Nenhum aluno cadastrado. Cadastre um aluno primeiro!");
             return;
         }
-
         System.out.print("Digite o nome do aluno: ");
         String nomeAluno = sc.nextLine();
-
         boolean alunoExiste = false;
         for (int i = 0; i < totalAlunos; i++) {
             if (alunos[i].nome.equalsIgnoreCase(nomeAluno)) {
@@ -204,7 +181,6 @@ public class BibliotecaVirtual {
                 break;
             }
         }
-
         if (alunoExiste) {
             livroEncontrado.emprestar(nomeAluno);
         } else {
@@ -215,14 +191,12 @@ public class BibliotecaVirtual {
     static void devolverLivro() {
         System.out.print("Digite o título do livro para devolver: ");
         String titulo = sc.nextLine();
-
         for (int i = 0; i < totalLivros; i++) {
             if (livros[i].titulo.equalsIgnoreCase(titulo)) {
                 livros[i].devolver();
                 return;
             }
         }
-
         System.out.println("Livro não encontrado!");
     }
 }
