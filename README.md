@@ -1,44 +1,59 @@
-## Funcionalidades
-
-- Cadastrar novos livros (título, autor e ano de publicação)  
-- Listar todos os livros cadastrados  
-- Cadastrar alunos (nome, e-mail e telefone)  
+## ⚙️ Funcionalidades
+- Cadastrar livros com título, autor e ano de publicação  
+- Listar livros com informações e situação atual (disponível ou emprestado)  
+- Cadastrar alunos com nome, e-mail e telefone  
 - Listar alunos cadastrados  
-- Emprestar livros a alunos  
-- Devolver livros emprestados  
-- Utilizar vetores fixos para armazenamento dos dados  
+- Emprestar livros para alunos registrados  
+- Devolver livros  
+- Controle de quantidade máxima de livros e alunos  
 
 ---
 
-## Estrutura do Código
+## 🧱 Estrutura do Código
 
-O projeto é composto por três classes principais:
+### Classe `Livro`
+Representa um livro da biblioteca, com informações como:
+- `nome`
+- `autor`
+- `ano`
+- `emprestado`
+- `alunoEmprestimo`
 
-### 1. `Livro`
-Representa cada livro com seus dados e status de empréstimo.
-- Atributos: `titulo`, `autor`, `ano`, `emprestado`, `emprestadoPara`
-- Métodos principais:
-  - `emprestar(String aluno)`
-  - `devolver()`
-  - `getStatus()`
-  - `toString()`
-
-### 2. `Aluno`
-Representa os alunos cadastrados.
-- Atributos: `nome`, `email`, `telefone`
-- Método principal: `toString()`
-
-### 3. `BibliotecaVirtual`
-Classe principal que contém:
-- Vetores fixos de `Livro` e `Aluno`
-- Menu de interação com o usuário
-- Métodos para gerenciar as operações do sistema
+Contém métodos para:
+- Emprestar (`emprestar()`)
+- Devolver (`devolver()`)
+- Exibir situação (`getSituacao()`)
+- Mostrar dados formatados (`toString()`)
 
 ---
 
-## Como Executar
+### Classe `Aluno`
+Armazena os dados de um aluno:
+- `nome`
+- `email`
+- `telefone`
 
-### 1. Compilar o código
-Abra o terminal na pasta onde o arquivo `.java` está localizado e digite:
-```bash
-javac BibliotecaVirtual.java
+Possui o método `toString()` para exibir as informações de forma organizada.
+
+---
+
+### Classe `BibliotecaVirtual`
+Classe principal com o método `main` e o **menu interativo**.  
+Gerencia os vetores de livros e alunos e implementa as principais ações do sistema.
+
+Principais métodos:
+- `cadastrarLivro()`  
+- `mostrarLivros()`  
+- `cadastrarAluno()`  
+- `listarAlunos()`  
+- `fazerEmprestimo()`  
+- `devolverLivro()`  
+
+---
+
+## ▶️ Como Executar
+
+1. Salve o código em um arquivo chamado **`BibliotecaVirtual.java`**  
+2. Compile no terminal:  
+   ```bash
+   javac BibliotecaVirtual.java
